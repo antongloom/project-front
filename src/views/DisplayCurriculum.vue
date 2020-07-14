@@ -9,15 +9,18 @@
     >
     <v-row>
     	<v-col>
-      	<h1>Display curriculum</h1>
-      	<p>This is description This is description This is description This is description</p>    	
+      	<h1>{{selectedCurriculum.name}}</h1>
+      	<p>{{selectedCurriculum.description}}</p>    	
       </v-col>
     </v-row>
     <v-row>
     	<v-col>
     		<v-expansion-panels multipe>
-			    <v-expansion-panel>
-			      <v-expansion-panel-header>Section 1</v-expansion-panel-header>
+			    <v-expansion-panel
+			    	v-for="(section, index) in selectedCurriculum.sections"
+			    	:key="index"
+			    >
+			      <v-expansion-panel-header>Section - {{ section.name }}</v-expansion-panel-header>
 			      <v-expansion-panel-content>
 	            <v-list
 						      subheader
@@ -200,3 +203,25 @@
     </v-col>
   </v-row>
 </template>
+
+<script>
+
+import { mapState } from 'vuex'	
+
+export default {
+	data() {
+		return {
+			curriculumId: this.$route.params.id,
+			selectedCurriculum: {}
+		}
+	},
+	computed: {
+		...mapState(['curriculaData'])
+	},
+	mounted() {
+		this.selectedCurriculum = this.curriculaData.find(item => item.id === this.curriculumId)
+	}
+}
+
+</script>
+
